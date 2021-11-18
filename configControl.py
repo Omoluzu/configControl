@@ -8,10 +8,15 @@
 import os
 import configparser
 
+import sys
+# import config
 from pathlib import Path
 
+# file = Path(__file__).resolve()
+# sys.path.append(str(file.parents[1]))
+
 import settings
-from .settings import *
+# from settings import *
 
 
 __version__ = "1.0.0"
@@ -48,13 +53,13 @@ class Config:
     def check_parameters(self):
         """ Проверка на наличие всех параметров и создание их при отсутствии"""
 
-        for section, value in MAIN.items():
+        for section, value in settings.MAIN.items():
             if not self.config.has_section(section):
                 self.config.add_section(section)
 
             for item, key in value.items():
                 if not self.config.has_option(section, item):
-                    self.config.set(section, item, key)
+                    self.config.set(section, item, str(key))
 
         with open(self.file_config, "w") as config_file:
             self.config.write(config_file)
